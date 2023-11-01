@@ -8,7 +8,7 @@ import { PassportModule } from '@nestjs/passport';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'Secret1234',
+      secret: 'Secret1234', // env로 관리하기
       signOptions: {
         expiresIn: 60 * 60,
       },
