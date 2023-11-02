@@ -13,6 +13,14 @@ export class ReviewsService {
     private reviewRepository: Repository<Review>,
   ) {}
 
+  async getAllReviewsByUser(user: User): Promise<Review[]> {
+    const query = this.reviewRepository.createQueryBuilder('review');
+    query.where('review.userId = :userId', { userId: user.id });
+
+    const reviewList = await query.getMany();
+    return reviewList;
+  }
+
   async createReview(
     createReviewDto: CreateReviewDto,
     user: User,

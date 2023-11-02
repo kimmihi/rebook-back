@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { User } from 'src/auth/user.entity';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
@@ -10,6 +10,11 @@ import { CreateReviewDto } from './dto/create-review.dto';
 @Controller('reviews')
 export class ReviewsController {
   constructor(private reviewsService: ReviewsService) {}
+
+  @Get('')
+  getAllReviewsByUser(@GetUser() user: User): Promise<Review[]> {
+    return this.reviewsService.getAllReviewsByUser(user);
+  }
 
   @Post('/')
   createReview(
