@@ -5,8 +5,10 @@ import {
   BaseEntity,
   Unique,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 
+import { Book } from 'src/reviews/dto/create-review.dto';
 import { Review } from 'src/reviews/review.entity';
 
 @Entity()
@@ -20,6 +22,15 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Column()
+  like_books: Book[];
+
+  @ManyToMany(() => User)
+  followers: User[];
+
+  @ManyToMany(() => User)
+  followings: User[];
 
   @OneToMany(() => Review, (review) => review.user, { eager: true })
   reviews: Review[];
