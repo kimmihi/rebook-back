@@ -6,6 +6,7 @@ import {
   Unique,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { Book } from 'src/reviews/dto/create-review.dto';
@@ -27,9 +28,11 @@ export class User extends BaseEntity {
   like_books: Book[];
 
   @ManyToMany(() => User)
+  @JoinTable()
   followers: User[];
 
   @ManyToMany(() => User)
+  @JoinTable()
   followings: User[];
 
   @OneToMany(() => Review, (review) => review.user, { eager: true })

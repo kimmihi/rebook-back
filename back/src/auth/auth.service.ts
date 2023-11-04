@@ -56,4 +56,17 @@ export class AuthService {
       throw new UnauthorizedException('Login Failed');
     }
   }
+
+  async follow(followUserId: number, user: User) {
+    const me = await this.userRepository.findOne({
+      where: { id: user.id },
+    });
+
+    const followUser = await this.userRepository.findOne({
+      where: { id: followUserId },
+    });
+
+    me.followings.push(followUser);
+    await this.userRepository.save(me);
+  }
 }
