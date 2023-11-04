@@ -67,6 +67,8 @@ export class AuthService {
     });
 
     me.followings.push(followUser);
+    followUser.followers.push(me);
     await this.userRepository.save(me);
+    await this.userRepository.save(followUser);
   }
 }
