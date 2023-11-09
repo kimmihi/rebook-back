@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { UserEntity } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -16,12 +16,12 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const { username, password } = createUserDto;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -55,20 +55,5 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Login Failed');
     }
-  }
-
-  async follow(followUserId: number, user: User) {
-    const me = await this.userRepository.findOne({
-      where: { id: user.id },
-    });
-
-    const followUser = await this.userRepository.findOne({
-      where: { id: followUserId },
-    });
-
-    me.followings.push(followUser);
-    followUser.followers.push(me);
-    await this.userRepository.save(me);
-    await this.userRepository.save(followUser);
   }
 }
