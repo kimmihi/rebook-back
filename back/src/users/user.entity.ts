@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 
 import { FollowEntity } from './follow.entity';
+import { ReviewEntity } from 'src/reviews/review.entity';
+import { CommentEntity } from 'src/comments/comment.entity';
 
 @Entity()
 export class UserEntity extends BaseEntity {
@@ -28,4 +30,14 @@ export class UserEntity extends BaseEntity {
     eager: true,
   })
   followee_list: FollowEntity[];
+
+  @OneToMany(() => ReviewEntity, (review: ReviewEntity) => review.user, {
+    eager: true,
+  })
+  review_list: ReviewEntity[];
+
+  @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.writer, {
+    eager: true,
+  })
+  comment_list: CommentEntity[];
 }

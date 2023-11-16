@@ -4,12 +4,15 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { Book } from './dto/create-review.dto';
-import { User } from 'src/auth/user.entity';
+import { UserEntity } from 'src/users/user.entity';
+import { CommentEntity } from 'src/comments/comment.entity';
 
 @Entity()
-export class Review extends BaseEntity {
+export class ReviewEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,8 +23,21 @@ export class Review extends BaseEntity {
   content: string;
 
   @Column()
-  book: Book;
+  isbn: string;
 
-  @ManyToOne(() => User, (user) => user.reviews, { eager: false })
-  user: User;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.review_list, {
+    eager: false,
+  })
+  user: UserEntity;
+
+  @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.review, {
+    eager: true,
+  })
+  comment_list: CommentEntity[];
 }
