@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommentEntity } from './comment.entity';
+import { CommentEntity, ChildCommentEntity } from './comment.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([CommentEntity])],
+  imports: [TypeOrmModule.forFeature([CommentEntity, ChildCommentEntity])],
 })
 export class CommentsModule {}

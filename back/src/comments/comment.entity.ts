@@ -1,11 +1,12 @@
 import {
-  Entity,
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  Entity,
 } from 'typeorm';
 
 import { ReviewEntity } from 'src/reviews/review.entity';
@@ -38,4 +39,21 @@ export class CommentEntity extends BaseEntity {
     },
   )
   review: ReviewEntity;
+
+  @OneToMany(
+    () => ChildCommentEntity,
+    (childComment: ChildCommentEntity) => childComment.parent_comment,
+    { eager: true },
+  )
+  child_comment_list: ChildCommentEntity[];
+}
+
+@Entity()
+export class ChildCommentEntity extends CommentEntity {
+  @ManyToOne(
+    () => CommentEntity,
+    (comment: CommentEntity) => comment.child_comment_list,
+    { eager: false },
+  )
+  parent_comment: CommentEntity;
 }
