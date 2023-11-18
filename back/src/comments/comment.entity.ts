@@ -36,6 +36,7 @@ export class CommentEntity extends BaseEntity {
     (review: ReviewEntity) => review.comment_list,
     {
       eager: false,
+      onDelete: 'CASCADE',
     },
   )
   review: ReviewEntity;
@@ -43,7 +44,7 @@ export class CommentEntity extends BaseEntity {
   @OneToMany(
     () => ChildCommentEntity,
     (childComment: ChildCommentEntity) => childComment.parent_comment,
-    { eager: true },
+    { eager: true, cascade: true },
   )
   child_comment_list: ChildCommentEntity[];
 }
@@ -72,6 +73,7 @@ export class ChildCommentEntity extends BaseEntity {
     (review: ReviewEntity) => review.comment_list,
     {
       eager: false,
+      onDelete: 'CASCADE',
     },
   )
   review: ReviewEntity;
@@ -79,7 +81,7 @@ export class ChildCommentEntity extends BaseEntity {
   @ManyToOne(
     () => CommentEntity,
     (comment: CommentEntity) => comment.child_comment_list,
-    { eager: false },
+    { eager: false, onDelete: 'CASCADE' },
   )
   parent_comment: CommentEntity;
 }

@@ -7,6 +7,7 @@ import {
   Post,
   Patch,
   Query,
+  Delete,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -53,5 +54,10 @@ export class ReviewsController {
     @Body(ValidationPipe) updateReviewDto: UpdateReviewDto,
   ) {
     return this.reviewsService.updateReview(reviewId, updateReviewDto);
+  }
+
+  @Delete('/:reviewId')
+  deleteReview(@Param('reviewId', ParseIntPipe) reviewId: number) {
+    return this.reviewsService.deleteReview(reviewId);
   }
 }

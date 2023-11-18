@@ -7,6 +7,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { UserEntity } from 'src/users/user.entity';
 import { CommentEntity } from 'src/comments/comment.entity';
@@ -31,6 +32,9 @@ export class ReviewEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @DeleteDateColumn()
+  deletedAt: Date | null;
+
   @ManyToOne(() => UserEntity, (user: UserEntity) => user.review_list, {
     eager: false,
   })
@@ -38,6 +42,7 @@ export class ReviewEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.review, {
     eager: true,
+    cascade: true,
   })
   comment_list: CommentEntity[];
 }

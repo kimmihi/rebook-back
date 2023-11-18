@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, ForbiddenException, HttpCode } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ReviewEntity } from './review.entity';
@@ -77,5 +77,18 @@ export class ReviewsService {
     await this.reviewRepository.save(updatedReview);
 
     return review;
+  }
+
+  async deleteReview(reviewId: number) {
+    const review = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+    });
+
+    if (!review) {
+      throw new ForbiddenException();
+    }
+
+    await this.reviewRepository.softDelete({ id: reviewId });
+    return HttpCode(200);
   }
 }
