@@ -1,26 +1,35 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 
-import { User } from 'src/auth/user.entity';
+import { UserEntity } from 'src/users/user.entity';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
-import { Review } from './review.entity';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 
 @Controller('reviews')
+@UseGuards(AuthGuard)
 export class ReviewsController {
   constructor(private reviewsService: ReviewsService) {}
 
   @Get('')
-  getAllReviewsByUser(@GetUser() user: User): Promise<Review[]> {
-    return this.reviewsService.getAllReviewsByUser(user);
+  getReviewListByIsbn(@Query('isbn') isbn: string) {
+    return this.reviewsService.getReviewListByIsbn(isbn);
   }
 
-  @Post('/')
+  @Post('')
   createReview(
-    @Body() createReviewDto: CreateReviewDto,
-    @GetUser() user: User,
-  ): Promise<Review> {
+    @Body(ValidationPipe) createReviewDto: CreateReviewDto,
+    @GetUser() user: UserEntity,
+  ) {
     return this.reviewsService.createReview(createReviewDto, user);
   }
 }

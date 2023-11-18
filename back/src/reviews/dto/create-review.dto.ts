@@ -1,12 +1,5 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
 
-export class Book {
-  isbn: string;
-  title: string;
-  author: string;
-  publisher: string;
-}
-
 export class CreateReviewDto {
   @IsNotEmpty()
   title: string;
@@ -16,5 +9,5 @@ export class CreateReviewDto {
   content: string;
 
   @IsNotEmpty()
-  book: Book;
+  isbn: string;
 }
