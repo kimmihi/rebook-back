@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Patch,
   Query,
   UseGuards,
   ValidationPipe,
@@ -16,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Controller('reviews')
 @UseGuards(AuthGuard)
@@ -43,5 +45,13 @@ export class ReviewsController {
     @GetUser() user: UserEntity,
   ) {
     return this.reviewsService.createReview(createReviewDto, user);
+  }
+
+  @Patch('/:reviewId')
+  updateReview(
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+    @Body(ValidationPipe) updateReviewDto: UpdateReviewDto,
+  ) {
+    return this.reviewsService.updateReview(reviewId, updateReviewDto);
   }
 }

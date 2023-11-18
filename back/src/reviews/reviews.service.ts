@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ReviewEntity } from './review.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 import { UserEntity } from 'src/users/user.entity';
 
 @Injectable()
@@ -57,5 +58,24 @@ export class ReviewsService {
     await this.reviewRepository.save(newReview);
 
     return newReview;
+  }
+
+  async updateReview(reviewId: number, updateReviewDto: UpdateReviewDto) {
+    const review = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+    });
+
+    if (!review) {
+      throw new ForbiddenException();
+    }
+
+    const updatedReview = {
+      ...review,
+      ...updateReviewDto,
+    };
+
+    await this.reviewRepository.save(updatedReview);
+
+    return review;
   }
 }
