@@ -15,6 +15,14 @@ export class ReviewsService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  async getReviewOne(reviewId: number) {
+    const review = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+    });
+
+    return review;
+  }
+
   async getReviewListByIsbn(isbn: string) {
     const reviewList = await this.reviewRepository.find({ where: { isbn } });
     return reviewList;

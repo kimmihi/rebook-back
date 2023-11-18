@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Post,
   Query,
   UseGuards,
@@ -19,6 +21,11 @@ import { CreateReviewDto } from './dto/create-review.dto';
 @UseGuards(AuthGuard)
 export class ReviewsController {
   constructor(private reviewsService: ReviewsService) {}
+
+  @Get('/:reviewId')
+  getReviewOne(@Param('reviewId', ParseIntPipe) reviewId: number) {
+    return this.reviewsService.getReviewOne(reviewId);
+  }
 
   @Get('')
   getReviewListByIsbn(@Query('isbn') isbn: string) {
