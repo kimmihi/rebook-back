@@ -25,6 +25,11 @@ export class ReviewsController {
     return this.reviewsService.getReviewListByIsbn(isbn);
   }
 
+  @Get('/followee')
+  getReviewListByFollowUser(@GetUser() user: UserEntity) {
+    return this.reviewsService.getReviewListByFollowUser(user);
+  }
+
   @Post('')
   createReview(
     @Body(ValidationPipe) createReviewDto: CreateReviewDto,

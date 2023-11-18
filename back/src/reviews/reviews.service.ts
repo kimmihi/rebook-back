@@ -11,11 +11,30 @@ export class ReviewsService {
   constructor(
     @InjectRepository(ReviewEntity)
     private reviewRepository: Repository<ReviewEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async getReviewListByIsbn(isbn: string) {
     const reviewList = await this.reviewRepository.find({ where: { isbn } });
     return reviewList;
+  }
+
+  async getReviewListByFollowUser(user: UserEntity) {
+    const me = await this.userRepository.findOne({
+      where: { id: user.id },
+    });
+
+    const followerList = me.followee_list.map((value) => value.follower_id);
+    const result = [];
+    for (const followerId of followerList) {
+      const reviewList = await this.reviewRepository.find({
+        where: { user: { id: followerId } },
+      });
+      result.push(...reviewList);
+    }
+
+    return result;
   }
 
   async createReview(createReviewDto: CreateReviewDto, user: UserEntity) {
