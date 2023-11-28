@@ -9,6 +9,7 @@ import {
 import { FollowEntity } from './follow.entity';
 import { ReviewEntity } from 'src/reviews/review.entity';
 import { CommentEntity } from 'src/comments/comment.entity';
+import { BookEntity } from 'src/books/book.entity';
 
 @Entity()
 export class UserEntity extends BaseEntity {
@@ -40,4 +41,7 @@ export class UserEntity extends BaseEntity {
     eager: true,
   })
   comment_list: CommentEntity[];
+
+  @OneToMany(() => BookEntity, (book: BookEntity) => book.user, { eager: true })
+  book_list: BookEntity[];
 }
