@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from './book.entity';
@@ -30,5 +30,12 @@ export class BooksService {
 
     await this.bookRepository.save(newReadingBook);
     return newReadingBook;
+  }
+
+  async updateBookStatus(bookId: number) {
+    await this.bookRepository.update(bookId, {
+      status: 'DONE',
+    });
+    return HttpStatus.OK;
   }
 }

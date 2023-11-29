@@ -1,9 +1,12 @@
 import {
   Controller,
   Post,
+  Patch,
   Body,
   UseGuards,
   ValidationPipe,
+  Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
@@ -22,5 +25,10 @@ export class BooksController {
     @GetUser() user: UserEntity,
   ) {
     return this.booksService.registerReadingBook(registerReadingBookDto, user);
+  }
+
+  @Patch('/:bookId/status/done')
+  updateBookStatus(@Param('bookId', ParseIntPipe) bookId: number) {
+    return this.booksService.updateBookStatus(bookId);
   }
 }
