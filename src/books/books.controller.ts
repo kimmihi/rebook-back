@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Patch,
   Body,
@@ -18,6 +19,11 @@ import { UserEntity } from 'src/users/user.entity';
 @UseGuards(AuthGuard())
 export class BooksController {
   constructor(private booksService: BooksService) {}
+
+  @Get()
+  getReadingBookList(@GetUser() user: UserEntity) {
+    return this.booksService.getReadingBookList(user);
+  }
 
   @Post('')
   registerReadingBook(

@@ -14,17 +14,24 @@ export class BooksService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
+  async getReadingBookList(user: UserEntity) {
+    const me = await this.userRepository.findOne({
+      where: { id: user.id },
+    });
+
+    const readingBookList = me.book_list.filter(
+      (book) => book.status === 'READING',
+    );
+
+    return readingBookList;
+  }
+
   async registerReadingBook(
     registerReadingBookDto: RegisterReadingBookDto,
     user: UserEntity,
   ) {
-    const { title, author, isbn, cover } = registerReadingBookDto;
-
     const newReadingBook = this.bookRepository.create({
-      title,
-      author,
-      isbn,
-      cover,
+      ...registerReadingBookDto,
       user,
     });
 

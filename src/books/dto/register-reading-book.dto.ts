@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsDate,
+} from 'class-validator';
 
 export class RegisterReadingBookDto {
   @IsString()
@@ -7,13 +13,37 @@ export class RegisterReadingBookDto {
 
   @IsString()
   @IsNotEmpty()
-  author: string;
+  contents: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  authors: string[];
+
+  @IsArray()
+  @IsNotEmpty()
+  translators: string[];
 
   @IsString()
   @IsNotEmpty()
   isbn: string;
 
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
   @IsString()
   @IsNotEmpty()
-  cover: string;
+  sale_price: string;
+
+  @IsString()
+  @IsNotEmpty()
+  publisher: string;
+
+  @IsString()
+  @IsNotEmpty()
+  thumbnail: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  datetime: Date;
 }

@@ -21,13 +21,31 @@ export class BookEntity extends BaseEntity {
   title: string;
 
   @Column()
+  contents: string;
+
+  @Column()
   author: string;
+
+  @Column()
+  translator: string;
 
   @Column()
   isbn: string;
 
   @Column()
-  cover: string;
+  price: number;
+
+  @Column()
+  sale_price: string;
+
+  @Column()
+  publisher: string;
+
+  @Column()
+  thumbnail: string;
+
+  @Column()
+  datetime: Date;
 
   @Column({ default: 'READING' })
   status: BookStatus;

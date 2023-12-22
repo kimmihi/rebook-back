@@ -21,7 +21,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 
 @Controller('reviews')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard())
 export class ReviewsController {
   constructor(private reviewsService: ReviewsService) {}
 
