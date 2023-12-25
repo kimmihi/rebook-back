@@ -26,6 +26,14 @@ export class BooksService {
     return readingBookList;
   }
 
+  async getBookItem(bookId: number, user: UserEntity) {
+    const book = await this.bookRepository.findOne({
+      where: { id: bookId, user: { id: user.id } },
+    });
+
+    return book;
+  }
+
   async registerReadingBook(
     registerReadingBookDto: RegisterReadingBookDto,
     user: UserEntity,

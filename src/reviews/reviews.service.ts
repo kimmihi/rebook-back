@@ -1,11 +1,12 @@
 import { Injectable, ForbiddenException, HttpCode } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ReviewEntity } from './review.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { ReviewEntity } from './review.entity';
 import { UserEntity } from 'src/users/user.entity';
+import { BookEntity } from 'src/books/book.entity';
 
 @Injectable()
 export class ReviewsService {
@@ -14,6 +15,8 @@ export class ReviewsService {
     private reviewRepository: Repository<ReviewEntity>,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(BookEntity)
+    private bookRepository: Repository<BookEntity>,
   ) {}
 
   async getReviewOne(reviewId: number) {
@@ -24,10 +27,10 @@ export class ReviewsService {
     return review;
   }
 
-  async getReviewListByIsbn(isbn: string) {
-    const reviewList = await this.reviewRepository.find({ where: { isbn } });
-    return reviewList;
-  }
+  // async getReviewListByIsbn(isbn: string) {
+  //   const reviewList = await this.reviewRepository.find({ where: { isbn } });
+  //   return reviewList;
+  // }
 
   async getReviewListByFollowUser(user: UserEntity) {
     const me = await this.userRepository.findOne({
@@ -38,7 +41,7 @@ export class ReviewsService {
     const result = [];
     for (const followerId of followerList) {
       const reviewList = await this.reviewRepository.find({
-        where: { user: { id: followerId } },
+        where: { user_id: followerId },
       });
       result.push(...reviewList);
     }
@@ -47,14 +50,15 @@ export class ReviewsService {
   }
 
   async createReview(createReviewDto: CreateReviewDto, user: UserEntity) {
-    const { title, content, isbn } = createReviewDto;
+    const { title, content, book } = createReviewDto;
     const newReview = this.reviewRepository.create({
       title,
       content,
-      isbn,
-      user,
+      book,
+      user_id: user.id,
     });
 
+    await this.bookRepository.update(book.id, { status: 'DONE' });
     await this.reviewRepository.save(newReview);
 
     return newReview;

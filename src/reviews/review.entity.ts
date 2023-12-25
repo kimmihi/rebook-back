@@ -3,15 +3,14 @@ import {
   Entity,
   BaseEntity,
   PrimaryGeneratedColumn,
-  ManyToOne,
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import { UserEntity } from 'src/users/user.entity';
 import { CommentEntity } from 'src/comments/comment.entity';
 import { LikesEntity } from 'src/likes/likes.entity';
+import { BookEntity } from 'src/books/book.entity';
 
 @Entity()
 export class ReviewEntity extends BaseEntity {
@@ -25,7 +24,7 @@ export class ReviewEntity extends BaseEntity {
   content: string;
 
   @Column()
-  isbn: string;
+  user_id: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -36,10 +35,10 @@ export class ReviewEntity extends BaseEntity {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.review_list, {
-    eager: false,
+  @OneToMany(() => BookEntity, (book: BookEntity) => book.review_list, {
+    eager: true,
   })
-  user: UserEntity;
+  book: BookEntity;
 
   @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.review, {
     eager: true,

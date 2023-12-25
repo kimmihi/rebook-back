@@ -6,7 +6,6 @@ import {
   ParseIntPipe,
   Post,
   Patch,
-  Query,
   Delete,
   UseGuards,
   ValidationPipe,
@@ -30,10 +29,10 @@ export class ReviewsController {
     return this.reviewsService.getReviewOne(reviewId);
   }
 
-  @Get('')
-  getReviewListByIsbn(@Query('isbn') isbn: string) {
-    return this.reviewsService.getReviewListByIsbn(isbn);
-  }
+  // @Get('')
+  // getReviewListByIsbn(@Query('isbn') isbn: string) {
+  //   return this.reviewsService.getReviewListByIsbn(isbn);
+  // }
 
   @Get('/followee')
   getReviewListByFollowUser(@GetUser() user: UserEntity) {

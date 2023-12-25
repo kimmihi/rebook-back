@@ -25,6 +25,14 @@ export class BooksController {
     return this.booksService.getReadingBookList(user);
   }
 
+  @Get('/:id')
+  getBookItem(
+    @Param('id', ParseIntPipe) bookId: number,
+    @GetUser() user: UserEntity,
+  ) {
+    return this.booksService.getBookItem(bookId, user);
+  }
+
   @Post('')
   registerReadingBook(
     @Body(ValidationPipe) registerReadingBookDto: RegisterReadingBookDto,
