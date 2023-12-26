@@ -31,7 +31,7 @@ export class CommentsService {
 
     const newComment = this.commentRepository.create({
       content,
-      writer: user,
+      user_id: user.id,
       review,
     });
 
@@ -57,7 +57,7 @@ export class CommentsService {
     const newChildComment = this.childCommentRepository.create({
       content,
       review,
-      writer: user,
+      user_id: user.id,
       parent_comment: parentComment,
     });
 

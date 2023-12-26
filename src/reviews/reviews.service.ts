@@ -24,13 +24,12 @@ export class ReviewsService {
       where: { id: reviewId },
     });
 
-    return review;
-  }
+    const book = await this.bookRepository.findOne({
+      where: { id: review.book_id },
+    });
 
-  // async getReviewListByIsbn(isbn: string) {
-  //   const reviewList = await this.reviewRepository.find({ where: { isbn } });
-  //   return reviewList;
-  // }
+    return { review, book };
+  }
 
   async getReviewListByFollowUser(user: UserEntity) {
     const me = await this.userRepository.findOne({
@@ -50,15 +49,15 @@ export class ReviewsService {
   }
 
   async createReview(createReviewDto: CreateReviewDto, user: UserEntity) {
-    const { title, content, book } = createReviewDto;
+    const { title, content, bookId } = createReviewDto;
     const newReview = this.reviewRepository.create({
       title,
       content,
-      book,
+      book_id: bookId,
       user_id: user.id,
     });
 
-    await this.bookRepository.update(book.id, { status: 'DONE' });
+    await this.bookRepository.update(bookId, { status: 'DONE' });
     await this.reviewRepository.save(newReview);
 
     return newReview;

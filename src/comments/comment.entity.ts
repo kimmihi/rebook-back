@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 
 import { ReviewEntity } from 'src/reviews/review.entity';
-import { UserEntity } from 'src/users/user.entity';
 
 @Entity()
 export class CommentEntity extends BaseEntity {
@@ -20,16 +19,14 @@ export class CommentEntity extends BaseEntity {
   @Column()
   content: string;
 
+  @Column()
+  user_id: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.comment_list, {
-    eager: false,
-  })
-  writer: UserEntity;
 
   @ManyToOne(
     () => ReviewEntity,
@@ -57,16 +54,14 @@ export class ChildCommentEntity extends BaseEntity {
   @Column()
   content: string;
 
+  @Column()
+  user_id: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.comment_list, {
-    eager: false,
-  })
-  writer: UserEntity;
 
   @ManyToOne(
     () => ReviewEntity,

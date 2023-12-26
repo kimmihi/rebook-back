@@ -1,5 +1,4 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
-import { BookEntity } from 'src/books/book.entity';
 
 export class CreateReviewDto {
   @IsNotEmpty()
@@ -10,5 +9,5 @@ export class CreateReviewDto {
   content: string;
 
   @IsNotEmpty()
-  book: BookEntity;
+  bookId: number;
 }

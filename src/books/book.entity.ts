@@ -6,11 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
-  OneToMany,
 } from 'typeorm';
-import { UserEntity } from 'src/users/user.entity';
-import { ReviewEntity } from 'src/reviews/review.entity';
 
 export type BookStatus = 'READING' | 'DONE';
 
@@ -18,6 +14,9 @@ export type BookStatus = 'READING' | 'DONE';
 export class BookEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  user_id: number;
 
   @Column()
   title: string;
@@ -60,14 +59,4 @@ export class BookEntity extends BaseEntity {
 
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @OneToMany(() => ReviewEntity, (review: ReviewEntity) => review.book, {
-    eager: false,
-  })
-  review_list: ReviewEntity[];
-
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.book_list, {
-    eager: false,
-  })
-  user: UserEntity;
 }

@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { CommentEntity } from 'src/comments/comment.entity';
 import { LikesEntity } from 'src/likes/likes.entity';
-import { BookEntity } from 'src/books/book.entity';
 
 @Entity()
 export class ReviewEntity extends BaseEntity {
@@ -26,6 +25,9 @@ export class ReviewEntity extends BaseEntity {
   @Column()
   user_id: number;
 
+  @Column()
+  book_id: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -34,11 +36,6 @@ export class ReviewEntity extends BaseEntity {
 
   @DeleteDateColumn()
   deletedAt: Date | null;
-
-  @OneToMany(() => BookEntity, (book: BookEntity) => book.review_list, {
-    eager: true,
-  })
-  book: BookEntity;
 
   @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.review, {
     eager: true,

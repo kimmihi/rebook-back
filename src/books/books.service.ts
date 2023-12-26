@@ -15,20 +15,16 @@ export class BooksService {
   ) {}
 
   async getReadingBookList(user: UserEntity) {
-    const me = await this.userRepository.findOne({
-      where: { id: user.id },
+    const readingBookList = await this.bookRepository.find({
+      where: { user_id: user.id, status: 'READING' },
     });
-
-    const readingBookList = me.book_list.filter(
-      (book) => book.status === 'READING',
-    );
 
     return readingBookList;
   }
 
   async getBookItem(bookId: number, user: UserEntity) {
     const book = await this.bookRepository.findOne({
-      where: { id: bookId, user: { id: user.id } },
+      where: { id: bookId, user_id: user.id },
     });
 
     return book;
@@ -40,7 +36,7 @@ export class BooksService {
   ) {
     const newReadingBook = this.bookRepository.create({
       ...registerReadingBookDto,
-      user,
+      user_id: user.id,
     });
 
     await this.bookRepository.save(newReadingBook);
