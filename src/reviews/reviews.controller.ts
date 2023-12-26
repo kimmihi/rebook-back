@@ -1,3 +1,4 @@
+import type { Pagination } from 'src/types/pagination';
 import {
   Body,
   Controller,
@@ -19,10 +20,20 @@ import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 
+import { GetPagination } from 'src/decorators/get-pagination';
+
 @Controller('reviews')
 @UseGuards(AuthGuard())
 export class ReviewsController {
   constructor(private reviewsService: ReviewsService) {}
+
+  @Get()
+  getReviewList(
+    @GetPagination() pagination: Pagination,
+    @GetUser() user: UserEntity,
+  ) {
+    return this.reviewsService.getReviewList(pagination, user);
+  }
 
   @Get('/:reviewId')
   getReviewOne(@Param('reviewId', ParseIntPipe) reviewId: number) {

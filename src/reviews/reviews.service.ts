@@ -1,7 +1,9 @@
+import type { Pagination } from 'src/types/pagination';
+
 import { Injectable, ForbiddenException, HttpCode } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewEntity } from './review.entity';
@@ -18,6 +20,34 @@ export class ReviewsService {
     @InjectRepository(BookEntity)
     private bookRepository: Repository<BookEntity>,
   ) {}
+
+  async getReviewList(pagination: Pagination, user: UserEntity) {
+    const { page, size } = pagination;
+    const [reviewList, total] = await this.reviewRepository.findAndCount({
+      take: size,
+      skip: (page - 1) * size,
+      where: { user_id: Not(user.id) },
+    });
+
+    const userList = await this.userRepository.find();
+
+    const mappedReviewList = reviewList.map((review) => {
+      const user = userList.find((user) => user.id === review.user_id);
+      const { username } = user;
+      return {
+        ...review,
+        username,
+      };
+    });
+
+    return {
+      data: mappedReviewList,
+      page,
+      size,
+      total,
+      totalPages: Math.ceil(total / size),
+    };
+  }
 
   async getReviewOne(reviewId: number) {
     const review = await this.reviewRepository.findOne({
