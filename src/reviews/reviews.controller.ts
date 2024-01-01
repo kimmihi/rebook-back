@@ -37,7 +37,7 @@ export class ReviewsController {
 
   @Get('/:reviewId')
   getReviewOne(@Param('reviewId', ParseIntPipe) reviewId: number) {
-    return this.reviewsService.getReviewOne(reviewId);
+    return this.reviewsService.getReviewItem(reviewId);
   }
 
   // @Get('')

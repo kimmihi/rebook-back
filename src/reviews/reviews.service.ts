@@ -33,10 +33,10 @@ export class ReviewsService {
 
     const mappedReviewList = reviewList.map((review) => {
       const user = userList.find((user) => user.id === review.user_id);
-      const { username } = user;
+      const { userId } = user;
       return {
         ...review,
-        username,
+        userId,
       };
     });
 
@@ -49,7 +49,7 @@ export class ReviewsService {
     };
   }
 
-  async getReviewOne(reviewId: number) {
+  async getReviewItem(reviewId: number) {
     const review = await this.reviewRepository.findOne({
       where: { id: reviewId },
     });
@@ -58,7 +58,7 @@ export class ReviewsService {
       where: { id: review.book_id },
     });
 
-    return { review, book };
+    return { ...review, book };
   }
 
   async getReviewListByFollowUser(user: UserEntity) {

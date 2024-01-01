@@ -22,11 +22,16 @@ export class AuthService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const { username, password } = createUserDto;
+    const { name, dateOfBirth, email, gender, userId, password } =
+      createUserDto;
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = this.userRepository.create({
-      username,
+      name,
+      email,
+      gender,
+      userId,
+      dateOfBirth,
       password: hashedPassword,
     });
 
@@ -44,11 +49,11 @@ export class AuthService {
   }
 
   async signIn(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
-    const { username, password } = loginUserDto;
-    const user = await this.userRepository.findOne({ where: { username } });
+    const { userId, password } = loginUserDto;
+    const user = await this.userRepository.findOne({ where: { userId } });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { username };
+      const payload = { userId };
       const accessToken = await this.jwtService.sign(payload);
 
       return { accessToken };

@@ -1,3 +1,4 @@
+import type { Gender } from 'src/types/user';
 import {
   BaseEntity,
   Entity,
@@ -15,7 +16,19 @@ export class UserEntity extends BaseEntity {
   id: number;
 
   @Column()
-  username: string;
+  name: string;
+
+  @Column()
+  gender: Gender;
+
+  @Column()
+  dateOfBirth: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  userId: string;
 
   @Column()
   password: string;
