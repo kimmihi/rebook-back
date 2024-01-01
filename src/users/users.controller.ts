@@ -16,6 +16,11 @@ import { UserEntity } from './user.entity';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @Get('/me')
+  getMyInfo(@GetUser() user: UserEntity) {
+    return this.userService.getMyInfo(user);
+  }
+
   @Get('/follow/:followId')
   follow(
     @Param('followId', ParseIntPipe) followId: number,
