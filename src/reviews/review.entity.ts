@@ -7,9 +7,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { BookEntity } from 'src/books/book.entity';
 import { CommentEntity } from 'src/comments/comment.entity';
 import { LikesEntity } from 'src/likes/likes.entity';
+import { UserEntity } from 'src/users/user.entity';
 
 @Entity()
 export class ReviewEntity extends BaseEntity {
@@ -22,11 +27,9 @@ export class ReviewEntity extends BaseEntity {
   @Column()
   content: string;
 
-  @Column()
-  user_id: number;
-
-  @Column()
-  book_id: number;
+  @OneToOne(() => BookEntity)
+  @JoinColumn({ name: 'bookId' })
+  book: BookEntity;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -41,11 +44,14 @@ export class ReviewEntity extends BaseEntity {
     eager: true,
     cascade: true,
   })
-  comment_list: CommentEntity[];
+  commentList: CommentEntity[];
 
   @OneToMany(() => LikesEntity, (likes: LikesEntity) => likes.review, {
     eager: true,
     cascade: true,
   })
-  like_list: LikesEntity[];
+  likeList: LikesEntity[];
+
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.bookList)
+  user: UserEntity;
 }

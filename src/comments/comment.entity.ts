@@ -28,14 +28,10 @@ export class CommentEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(
-    () => ReviewEntity,
-    (review: ReviewEntity) => review.comment_list,
-    {
-      eager: false,
-      onDelete: 'CASCADE',
-    },
-  )
+  @ManyToOne(() => ReviewEntity, (review: ReviewEntity) => review.commentList, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
   review: ReviewEntity;
 
   @OneToMany(
@@ -63,15 +59,11 @@ export class ChildCommentEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(
-    () => ReviewEntity,
-    (review: ReviewEntity) => review.comment_list,
-    {
-      eager: false,
-      onDelete: 'CASCADE',
-    },
-  )
-  review: ReviewEntity;
+  // @ManyToOne(() => ReviewEntity, (review: ReviewEntity) => review.commentList, {
+  //   eager: false,
+  //   onDelete: 'CASCADE',
+  // })
+  // review: ReviewEntity;
 
   @ManyToOne(
     () => CommentEntity,

@@ -19,23 +19,23 @@ export class UsersService {
 
   async getMyInfo(user: UserEntity) {
     const me = await this.userRepository.findOne({ where: { id: user.id } });
-    const books = await this.bookRepository.find({
-      where: { user_id: user.id },
-    });
+    // const books = await this.bookRepository.find({
+    //   where: { user_id: user.id },
+    // });
 
-    const { name, email } = me;
+    const { name, userId, email } = me;
 
     return {
       name,
+      userId,
       email,
-      books,
     };
   }
 
   async follow(followerId: number, user: UserEntity) {
     const me = await this.userRepository.findOne({ where: { id: user.id } });
 
-    const hasFollow = me.followee_list.find(({ id }) => id === followerId);
+    const hasFollow = me.followeeList.find(({ id }) => id === followerId);
     if (hasFollow) {
       throw new ConflictException('이미 팔로우하고 있습니다.');
     }

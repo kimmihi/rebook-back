@@ -5,12 +5,13 @@ import { ReviewEntity } from 'src/reviews/review.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
+import {} from './comment.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([CommentEntity, ChildCommentEntity, ReviewEntity]),
     AuthModule,
   ],
   controllers: [CommentsController],
-  providers: [CommentsService],
+  providers: [CommentsService, CommentEntity],
 })
 export class CommentsModule {}

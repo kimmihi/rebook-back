@@ -26,22 +26,12 @@ export class ReviewsService {
     const [reviewList, total] = await this.reviewRepository.findAndCount({
       take: size,
       skip: (page - 1) * size,
-      where: { user_id: Not(user.id) },
-    });
-
-    const userList = await this.userRepository.find();
-
-    const mappedReviewList = reviewList.map((review) => {
-      const user = userList.find((user) => user.id === review.user_id);
-      const { userId } = user;
-      return {
-        ...review,
-        userId,
-      };
+      where: { user: { id: Not(user.id) } },
+      relations: { user: true, book: true },
     });
 
     return {
-      data: mappedReviewList,
+      list: reviewList,
       page,
       size,
       total,
@@ -52,13 +42,10 @@ export class ReviewsService {
   async getReviewItem(reviewId: number) {
     const review = await this.reviewRepository.findOne({
       where: { id: reviewId },
+      relations: { user: true, book: true },
     });
 
-    const book = await this.bookRepository.findOne({
-      where: { id: review.book_id },
-    });
-
-    return { ...review, book };
+    return review;
   }
 
   async getReviewListByFollowUser(user: UserEntity) {
@@ -66,11 +53,11 @@ export class ReviewsService {
       where: { id: user.id },
     });
 
-    const followerList = me.followee_list.map((value) => value.follower_id);
+    const followerList = me.followeeList.map((value) => value.follower_id);
     const result = [];
     for (const followerId of followerList) {
       const reviewList = await this.reviewRepository.find({
-        where: { user_id: followerId },
+        where: { user: { id: followerId } },
       });
       result.push(...reviewList);
     }
@@ -79,15 +66,15 @@ export class ReviewsService {
   }
 
   async createReview(createReviewDto: CreateReviewDto, user: UserEntity) {
-    const { title, content, bookId } = createReviewDto;
+    const { title, content, book } = createReviewDto;
     const newReview = this.reviewRepository.create({
       title,
       content,
-      book_id: bookId,
-      user_id: user.id,
+      book,
+      user,
     });
 
-    await this.bookRepository.update(bookId, { status: 'DONE' });
+    await this.bookRepository.update(book.id, { status: 'DONE' });
     await this.reviewRepository.save(newReview);
 
     return newReview;

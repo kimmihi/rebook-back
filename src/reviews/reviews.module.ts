@@ -7,10 +7,16 @@ import { ReviewEntity } from './review.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserEntity } from 'src/users/user.entity';
 import { BookEntity } from 'src/books/book.entity';
+import { CommentEntity } from 'src/comments/comment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ReviewEntity, UserEntity, BookEntity]),
+    TypeOrmModule.forFeature([
+      ReviewEntity,
+      UserEntity,
+      BookEntity,
+      CommentEntity,
+    ]),
     AuthModule,
   ],
   controllers: [ReviewsController],

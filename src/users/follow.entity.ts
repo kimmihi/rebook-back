@@ -20,13 +20,13 @@ export class FollowEntity extends BaseEntity {
   @Column()
   followee_id: number;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.follower_list, {
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.followerList, {
     eager: false,
   })
   @JoinColumn({ name: 'follower_id' })
   follower: UserEntity;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.followee_list, {
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.followeeList, {
     eager: false,
   })
   @JoinColumn({ name: 'followee_id' })

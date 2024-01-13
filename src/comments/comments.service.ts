@@ -40,29 +40,29 @@ export class CommentsService {
     return HttpCode(200);
   }
 
-  async createChildComment(
-    reviewId: number,
-    parentCommentId: number,
-    createCommentDto: CreateCommentDto,
-    user: UserEntity,
-  ) {
-    const { content } = createCommentDto;
-    const review = await this.reviewRepository.findOne({
-      where: { id: reviewId },
-    });
-    const parentComment = await this.commentRepository.findOne({
-      where: { id: parentCommentId },
-    });
+  // async createChildComment(
+  //   reviewId: number,
+  //   parentCommentId: number,
+  //   createCommentDto: CreateCommentDto,
+  //   user: UserEntity,
+  // ) {
+  //   const { content } = createCommentDto;
+  //   const review = await this.reviewRepository.findOne({
+  //     where: { id: reviewId },
+  //   });
+  //   const parentComment = await this.commentRepository.findOne({
+  //     where: { id: parentCommentId },
+  //   });
 
-    const newChildComment = this.childCommentRepository.create({
-      content,
-      review,
-      user_id: user.id,
-      parent_comment: parentComment,
-    });
+  //   const newChildComment = this.childCommentRepository.create({
+  //     content,
+  //     review,
+  //     user_id: user.id,
+  //     parent_comment: parentComment,
+  //   });
 
-    await this.childCommentRepository.save(newChildComment);
+  //   await this.childCommentRepository.save(newChildComment);
 
-    return HttpCode(200);
-  }
+  //   return HttpCode(200);
+  // }
 }

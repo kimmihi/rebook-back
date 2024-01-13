@@ -27,18 +27,18 @@ export class CommentsController {
     return this.commentsService.createComment(reviewId, createCommentDto, user);
   }
 
-  @Post('/reviews/:reviewId/comments/:parentCommentId')
-  createChildComment(
-    @Param('reviewId', ParseIntPipe) reviewId: number,
-    @Param('parentCommentId', ParseIntPipe) parentCommentId: number,
-    @Body(ValidationPipe) createCommentDt: CreateCommentDto,
-    @GetUser() user: UserEntity,
-  ) {
-    return this.commentsService.createChildComment(
-      reviewId,
-      parentCommentId,
-      createCommentDt,
-      user,
-    );
-  }
+  // @Post('/reviews/:reviewId/comments/:parentCommentId')
+  // createChildComment(
+  //   @Param('reviewId', ParseIntPipe) reviewId: number,
+  //   @Param('parentCommentId', ParseIntPipe) parentCommentId: number,
+  //   @Body(ValidationPipe) createCommentDt: CreateCommentDto,
+  //   @GetUser() user: UserEntity,
+  // ) {
+  //   return this.commentsService.createChildComment(
+  //     reviewId,
+  //     parentCommentId,
+  //     createCommentDt,
+  //     user,
+  //   );
+  // }
 }

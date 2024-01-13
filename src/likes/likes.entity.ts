@@ -21,12 +21,12 @@ export class LikesEntity extends BaseEntity {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => UserEntity, (user: UserEntity) => user.like_list, {
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.likeList, {
     eager: false,
   })
   user: UserEntity;
 
-  @ManyToOne(() => ReviewEntity, (review: ReviewEntity) => review.like_list, {
+  @ManyToOne(() => ReviewEntity, (review: ReviewEntity) => review.likeList, {
     eager: false,
     onDelete: 'CASCADE',
   })
